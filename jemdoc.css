@@ -45,6 +45,7 @@ body {
     vertical-align: top;
 }
 
+
 #layout-menu td {
 	background: #f4f4f4;
     vertical-align: top;
@@ -372,3 +373,5 @@ table.imgtable, table.imgtable td {
     border: none;
     text-align: left;
 }
+
+
