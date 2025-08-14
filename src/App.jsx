@@ -147,9 +147,9 @@ export default function PersonalSite() {
                     ],
                     venue: "Under Review",
                     links: [
+                        {label: "Paper(upcoming)", href: "#"},
+                        {label: "Code", href: "https://github.com/mlpc-ucsd/OverLayBench"},
                         {label: "Website", href: "https://mlpc-ucsd.github.io/OverLayBench/"},
-                        // {label: "Code", href: "#"},
-                        // {label: "Project", href: "#"},
                     ],
                     tags: ["Layout-to-Image", "Evaluation"],
                 },
