@@ -239,16 +239,50 @@ export default function PersonalSite() {
 
 function Nav({name, cvUrl}) {
     return (
+        // <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:supports-[backdrop-filter]:bg-black/30 border-b border-zinc-200/60 dark:border-zinc-800/60">
+        //     <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between gap-3">
+        //         <a href="#home" className="font-semibold tracking-tight text-lg">
+        //             {name}
+        //         </a>
+        //
+        //         {/* Primary links: hide on small, show from md up */}
+        //         <nav className="hidden md:flex items-center gap-4 text-sm">
+        //             <a href="#news" className="hover:opacity-80">News</a>
+        //             <a href="#research" className="hover:opacity-80">Research</a>
+        //             <a href="#papers" className="hover:opacity-80">Papers</a>
+        //         </nav>
+        //
+        //         {/* Actions: always visible, even on mobile */}
+        //         <div className="flex items-center gap-2 shrink-0">
+        //             {cvUrl && (
+        //                 <a
+        //                     href={cvUrl}
+        //                     target="_blank"
+        //                     rel="noreferrer"
+        //                     className="px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-2xl bg-zinc-100 dark:bg-zinc-800
+        //              text-xs md:text-sm whitespace-nowrap
+        //              text-zinc-900 dark:text-zinc-100
+        //              hover:bg-zinc-200 dark:hover:bg-zinc-700"
+        //                 >
+        //                     CV
+        //                 </a>
+        //             )}
+        //             <ThemeToggle />
+        //         </div>
+        //     </div>
+        // </header>
         <header
             className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:supports-[backdrop-filter]:bg-black/30 border-b border-zinc-200/60 dark:border-zinc-800/60">
             <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between">
                 <a href="#home" className="font-semibold tracking-tight text-lg">
                     {name}
                 </a>
-                <nav className="hidden md:flex items-center gap-4 text-sm">
-                    <a href="#news" className="hover:opacity-80">News</a>
-                    <a href="#research" className="hover:opacity-80">Research</a>
-                    <a href="#papers" className="hover:opacity-80">Papers</a>
+                <nav className="flex items-center gap-2 shrink-0">
+                    <div className="hidden md:flex items-center gap-4 text-sm">
+                        <a href="#news" className="hover:opacity-80">News</a>
+                        <a href="#research" className="hover:opacity-80">Research</a>
+                        <a href="#papers" className="hover:opacity-80">Papers</a>
+                    </div>
                     {cvUrl && (
                         <a
                             href={cvUrl}
