@@ -121,7 +121,7 @@ export default function PersonalSite() {
                     ],
                 },
                 {
-                    lab: "ShanghaiTech University PLUS Lab (Advisor: Prof. Xuming He)",
+                    lab: "ShanghaiTech University PLUS Lab",
                     role: "Research Intern",
                     date: "2022 — 2024",
                     mentors: [
