@@ -91,6 +91,7 @@ export default function PersonalSite() {
                 "PyTorch", "vLLM", "FSDP", "Docker",
             ],
             news: [
+                {date: "Sep 2025", text: "One paper got accepted to NeurIPS 2025 D&B Track!🎉"},
                 {date: "Jun 2025", text: "Started my internship as Applied Scientist at Amazon!"},
                 {date: "May 2025", text: "One paper got accepted to ICCV 2025!🎉"},
                 {date: "Sep 2024", text: "One paper got accepted to NeurIPS 2024!🎉"},
@@ -145,9 +146,9 @@ export default function PersonalSite() {
                         {label: "Jianwen Xie", href: "http://www.stat.ucla.edu/~jxie/"},
                         {label: "Zhuowen Tu", href: "https://pages.ucsd.edu/~ztu/"},
                     ],
-                    venue: "Under Review",
+                    venue: "NeurIPS 2025 D&B Track",
                     links: [
-                        {label: "Paper(upcoming)", href: "#"},
+                        {label: "Paper", href: "https://arxiv.org/abs/2509.19282"},
                         {label: "Code", href: "https://github.com/mlpc-ucsd/OverLayBench"},
                         {label: "Website", href: "https://mlpc-ucsd.github.io/OverLayBench/"},
                     ],
@@ -419,65 +420,6 @@ function Papers({items}) {
             ))}
         </div>
     );
-
-    // return (
-    //     <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-    //         {items.map((p, i) => (
-    //             <Card key={i} className="rounded-2xl">
-    //                 <CardHeader>
-    //                     <CardTitle className="text-base md:text-lg font-semibold">{p.title}</CardTitle>
-    //                     <div className="text-sm text-zinc-600 dark:text-zinc-400">
-    //                         {p.authors.map((a, idx) => {
-    //                             const isMe = a.label.toLowerCase().includes("bingnan li");
-    //                             const nameEl = a.href ? (
-    //                                 <a
-    //                                     href={a.href}
-    //                                     target="_blank"
-    //                                     rel="noreferrer"
-    //                                     className="underline hover:opacity-80"
-    //                                 >
-    //                                     {isMe ? <strong>{a.label}</strong> : a.label}
-    //                                 </a>
-    //                             ) : isMe ? (
-    //                                 <strong>{a.label}</strong>
-    //                             ) : (
-    //                                 a.label
-    //                             );
-    //
-    //                             return (
-    //                                 <span key={idx}>
-    //                                     {nameEl}
-    //                                     {idx < p.authors.length - 1 ? ", " : ""}
-    //                                 </span>
-    //                             );
-    //                         })}
-    //                     </div>
-    //
-    //                     <div className="text-sm text-zinc-600 dark:text-zinc-400">{p.venue}</div>
-    //                 </CardHeader>
-    //                 <CardContent className="pt-0">
-    //                     <div className="mt-3 flex flex-wrap gap-2">
-    //                         {(p.tags || []).map((t, j) => (
-    //                             <Badge key={j} variant="secondary" className="rounded-2xl">
-    //                                 {t}
-    //                             </Badge>
-    //                         ))}
-    //                     </div>
-    //                     <div className="mt-4 flex flex-wrap gap-3">
-    //                         {(p.links || []).map((l, k) => (
-    //                             <Button key={k} asChild variant="ghost" size="sm" className="px-2 h-8">
-    //                                 <a href={l.href} target="_blank" rel="noreferrer"
-    //                                    className="inline-flex items-center">
-    //                                     <ArrowUpRight className="mr-1.5 h-4 w-4"/> {l.label}
-    //                                 </a>
-    //                             </Button>
-    //                         ))}
-    //                     </div>
-    //                 </CardContent>
-    //             </Card>
-    //         ))}
-    //     </div>
-    // );
 }
 
 function Research({items}) {
