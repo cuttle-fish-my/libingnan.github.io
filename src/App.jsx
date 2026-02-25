@@ -86,9 +86,7 @@ export default function PersonalSite() {
                 {label: "LinkedIn", href: "https://www.linkedin.com/in/bingnan-li-380579319/", icon: Linkedin},
             ],
             highlights: [
-                "Computer Vision", "Layout to Image Generation", "Object Detection", "Segmentation",
-                "Multi-Agent Systems", "Model Routing", "Model Merging",
-                "PyTorch", "vLLM", "FSDP", "Docker",
+
             ],
             news: [
                 {date: "Sep 2025", text: "One paper got accepted to NeurIPS 2025 D&B Track!🎉"},
@@ -136,11 +134,11 @@ export default function PersonalSite() {
                         "OverLayBench: A Benchmark for Layout-to-Image Generation with Dense Overlaps",
                     authors: [
                         {label: "Bingnan Li*"},
-                        {label: "Chen-Yu Wang*"},
-                        {label: "Haiyang Xu*"}, // no link needed
+                        {label: "Chen-Yu Wang*", href: "https://www.linkedin.com/in/chenyu-wang-profile/"},
+                        {label: "Haiyang Xu*", href: "https://scholar.google.com/citations?user=ds8ZvyMAAAAJ&hl=en"}, // no link needed
                         {label: "Xiang Zhang", href: "https://xzhang.dev"},
-                        {label: "Ethan Armand"},
-                        {label: "Divyansh Srivastava"},
+                        {label: "Ethan Armand", href: "https://scholar.google.com/citations?user=LE6bioEAAAAJ&hl=en"},
+                        {label: "Divyansh Srivastava", href: "https://scholar.google.com/citations?user=kw6DWjsAAAAJ&hl=en"},
                         {label: "Xiaojun Shan", href: "https://shanxiaojun.github.io"},
                         {label: "Zeyuan Chen", href: "https://zeyuan-chen.com"},
                         {label: "Jianwen Xie", href: "http://www.stat.ucla.edu/~jxie/"},
@@ -169,7 +167,7 @@ export default function PersonalSite() {
                     venue: "ICCV 2025",
                     links: [
                         {label: "Paper", href: "https://arxiv.org/html/2508.00728v1/"},
-                        // {label: "Code", href: "#"},
+                        {label: "Code", href: "https://github.com/mlpc-ucsd/YOLO-Count"},
                         // {label: "Project", href: "#"},
                     ],
                     tags: ["Object Detection", "Classifier Guidance", "Text-to-Image"],
