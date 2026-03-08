@@ -65,16 +65,24 @@ function ThemeToggle() {
     );
 }
 
+function Intro() {
+    return (
+        <div>
+            Hi! I'm an incoming PhD student at UC San Diego, working with <a href={"https://pages.ucsd.edu/~ztu/"}><u>Prof. Zhuowen Tu</u></a>. Previously, I completed my bachelor's in Computer Science at ShanghaiTech University under the supervision of Prof. Xuming He. My research interests are mainly on computer vision, focusing on controllable image and video generation. I'm passionate about advancing AI through innovative research and practical applications.
+        </div>
+    )
+}
+
 export default function PersonalSite() {
     const data = useMemo(
         () => ({
             name: "Bingnan Li",
-            title: "CS M.S. @ UC San Diego | Computer Vision & LLMs",
+            title: "CogSci PhD @ UC San Diego | Image Video Generation and World Model",
             location: "San Diego, CA",
             cvUrl: "/cv.pdf", // optional; place cv.pdf in /public
             avatar: "/portrait.jpg", // place your image in public/
-            intro:
-                "Hi! I'm a CS master's student at UC San Diego, working with Prof. Zhuowen Tu. Previously, I completed my bachelor's in Computer Science at ShanghaiTech University under the supervision of Prof. Xuming He. My research interests are mainly on computer vision, focusing on controllable image generation and image understanding. I'm passionate about advancing AI through innovative research and practical applications.",
+            intro: Intro(),
+                // "Hi! I'm a CS master's student at UC San Diego, working with Prof. Zhuowen Tu. Previously, I completed my bachelor's in Computer Science at ShanghaiTech University under the supervision of Prof. Xuming He. My research interests are mainly on computer vision, focusing on controllable image generation and image understanding. I'm passionate about advancing AI through innovative research and practical applications.",
             links: [
                 {label: "Email", href: "mailto:bil018@ucsd.edu", icon: Mail},
                 {
@@ -85,9 +93,7 @@ export default function PersonalSite() {
                 {label: "GitHub", href: "https://github.com/cuttle-fish-my", icon: Github},
                 {label: "LinkedIn", href: "https://www.linkedin.com/in/bingnan-li-380579319/", icon: Linkedin},
             ],
-            highlights: [
-
-            ],
+            highlights: [],
             news: [
                 {date: "Sep 2025", text: "One paper got accepted to NeurIPS 2025 D&B Track!🎉"},
                 {date: "Jun 2025", text: "Started my internship as Applied Scientist at Amazon!"},
@@ -108,8 +114,7 @@ export default function PersonalSite() {
                         {label: "Yantao Shen", href: "https://yantaoshen.github.io"},
                         {label: "Zhaoyang Zhang", href: "https://zzyfd.github.io/#/"},
                     ],
-                    bullets: [
-                    ],
+                    bullets: [],
                 },
                 {
                     lab: "UCSD MLPC Lab",
@@ -138,7 +143,10 @@ export default function PersonalSite() {
                         {label: "Haiyang Xu*", href: "https://scholar.google.com/citations?user=ds8ZvyMAAAAJ&hl=en"}, // no link needed
                         {label: "Xiang Zhang", href: "https://xzhang.dev"},
                         {label: "Ethan Armand", href: "https://scholar.google.com/citations?user=LE6bioEAAAAJ&hl=en"},
-                        {label: "Divyansh Srivastava", href: "https://scholar.google.com/citations?user=kw6DWjsAAAAJ&hl=en"},
+                        {
+                            label: "Divyansh Srivastava",
+                            href: "https://scholar.google.com/citations?user=kw6DWjsAAAAJ&hl=en"
+                        },
                         {label: "Xiaojun Shan", href: "https://shanxiaojun.github.io"},
                         {label: "Zeyuan Chen", href: "https://zeyuan-chen.com"},
                         {label: "Jianwen Xie", href: "http://www.stat.ucla.edu/~jxie/"},
@@ -406,8 +414,9 @@ function Papers({items}) {
                             <div className="mt-3 flex flex-wrap gap-3">
                                 {p.links.map((l, k) => (
                                     <Button key={k} asChild variant="ghost" size="sm" className="px-2 h-8">
-                                        <a href={l.href} target="_blank" rel="noreferrer" className="inline-flex items-center">
-                                            <ArrowUpRight className="mr-1.5 h-4 w-4" /> {l.label}
+                                        <a href={l.href} target="_blank" rel="noreferrer"
+                                           className="inline-flex items-center">
+                                            <ArrowUpRight className="mr-1.5 h-4 w-4"/> {l.label}
                                         </a>
                                     </Button>
                                 ))}
