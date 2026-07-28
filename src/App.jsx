@@ -1,111 +1,129 @@
-import {useState, useEffect, useMemo} from "react";
-import {motion} from "framer-motion";
+import {useEffect, useMemo, useState} from "react";
+import {motion as Motion} from "framer-motion";
 
-// shadcn/ui imports (relative to src/)
-import {Card, CardContent, CardHeader, CardTitle} from "../components/ui/card";
 import {Badge} from "../components/ui/badge";
 import {Button} from "../components/ui/button";
-import {Input} from "../components/ui/input";
-import {Separator} from "../components/ui/separator";
-
 import {
+    ArrowUp,
+    ArrowUpRight,
+    BookOpen,
+    BriefcaseBusiness,
+    CalendarFold,
+    Download,
+    FileText,
     Github,
+    Globe2,
+    GraduationCap,
     Linkedin,
     Mail,
-    FileText,
-    ArrowUpRight,
-    School,
-    CalendarFold,
-    Newspaper,
-    GraduationCap,
-    Link as LinkIcon,
-    Globe,
-    Sun,
+    MapPin,
     Moon,
+    Newspaper,
+    School,
+    Sun,
 } from "lucide-react";
 
-// ===== Theme toggle (system preference by default) =====
+const reveal = {
+    initial: {opacity: 0, y: 14},
+    whileInView: {opacity: 1, y: 0},
+    viewport: {once: true, margin: "-80px"},
+    transition: {duration: 0.55, ease: [0.22, 1, 0.36, 1]},
+};
+
+function getInitialTheme() {
+    if (typeof window === "undefined") return "light";
+    const saved = localStorage.getItem("theme");
+    if (saved === "light" || saved === "dark") return saved;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
 function ThemeToggle() {
-    const [theme, setTheme] = useState("system"); // "system" | "light" | "dark"
+    const [theme, setTheme] = useState(getInitialTheme);
 
     useEffect(() => {
-        // 1) Pick initial theme: saved -> system preference
-        const saved = localStorage.getItem("theme"); // "light" | "dark" | null
-        const prefersDark =
-            typeof window !== "undefined" &&
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        localStorage.setItem("theme", theme);
+    }, [theme]);
 
-        const initial = saved || (prefersDark ? "dark" : "light");
-        setTheme(saved ? saved : "system"); // reflect that we're using system if nothing saved
-        document.documentElement.classList.toggle("dark", initial === "dark");
-    }, []);
-
-    const toggleTheme = () => {
-        // simple toggle between light/dark; set localStorage override
-        const next = document.documentElement.classList.contains("dark") ? "light" : "dark";
-        setTheme(next);
-        localStorage.setItem("theme", next);
-        document.documentElement.classList.toggle("dark", next === "dark");
-    };
+    const isDark = theme === "dark";
 
     return (
         <button
-            onClick={toggleTheme}
-            className="p-2 rounded-xl bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition"
-            aria-label="Toggle Theme"
-            title={theme === "dark" ? "Switch to light" : "Switch to dark"}
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+            className="theme-toggle"
+            aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+            title={isDark ? "Switch to light theme" : "Switch to dark theme"}
         >
-            {document.documentElement.classList.contains("dark") ? (
-                <Sun className="h-5 w-5"/>
-            ) : (
-                <Moon className="h-5 w-5"/>
-            )}
+            <span className="theme-toggle-glow"/>
+            {isDark ? <Sun className="h-4 w-4"/> : <Moon className="h-4 w-4"/>}
         </button>
     );
 }
 
 function Intro() {
     return (
-        <div>
-            Hi! I'm an incoming PhD student at UC San Diego, working with <a href={"https://pages.ucsd.edu/~ztu/"}><u>Prof. Zhuowen Tu</u></a>. Previously, I completed my bachelor's in Computer Science at ShanghaiTech University under the supervision of Prof. Xuming He. My research interests are mainly on computer vision, focusing on controllable image and video generation. I'm passionate about advancing AI through innovative research and practical applications.
-        </div>
-    )
+        <span>
+            Hi! I&apos;m a PhD student at UC San Diego, working with{" "}
+            <a className="inline-link" href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noreferrer">
+                Prof. Zhuowen Tu
+            </a>
+            . Previously, I completed my bachelor&apos;s in Computer Science at ShanghaiTech University under the
+            supervision of Prof. Xuming He. My research focuses on generative models and controllable image and video
+            generation. I&apos;m passionate about turning ambitious research ideas into useful creative systems.
+        </span>
+    );
 }
 
 export default function PersonalSite() {
     const data = useMemo(
         () => ({
             name: "Bingnan Li",
-            title: "CogSci PhD @ UC San Diego | Image Video Generation and World Model",
+            title: "Generative Models & Controllable Generation",
+            affiliation: "CogSci PhD @ UC San Diego",
             location: "San Diego, CA",
-            cvUrl: "/cv.pdf", // optional; place cv.pdf in /public
-            avatar: "/portrait.jpg", // place your image in public/
-            intro: Intro(),
-                // "Hi! I'm a CS master's student at UC San Diego, working with Prof. Zhuowen Tu. Previously, I completed my bachelor's in Computer Science at ShanghaiTech University under the supervision of Prof. Xuming He. My research interests are mainly on computer vision, focusing on controllable image generation and image understanding. I'm passionate about advancing AI through innovative research and practical applications.",
+            cvUrl: "/cv.pdf",
+            avatar: "/portrait.jpg",
+            intro: <Intro/>,
             links: [
                 {label: "Email", href: "mailto:bil018@ucsd.edu", icon: Mail},
                 {
                     label: "Google Scholar",
                     href: "https://scholar.google.com/citations?user=pjnt_HkAAAAJ&hl=en",
-                    icon: Globe
+                    icon: Globe2,
                 },
                 {label: "GitHub", href: "https://github.com/cuttle-fish-my", icon: Github},
                 {label: "LinkedIn", href: "https://www.linkedin.com/in/bingnan-li-380579319/", icon: Linkedin},
             ],
-            highlights: [],
             news: [
-                {date: "Sep 2025", text: "One paper got accepted to NeurIPS 2025 D&B Track!🎉"},
-                {date: "Jun 2025", text: "Started my internship as Applied Scientist at Amazon!"},
-                {date: "May 2025", text: "One paper got accepted to ICCV 2025!🎉"},
-                {date: "Sep 2024", text: "One paper got accepted to NeurIPS 2024!🎉"},
+                {
+                    date: "Jul 2026",
+                    text: "Released a new paper on classifier-free guidance in on-policy diffusion distillation!",
+                    type: "New paper",
+                },
+                {
+                    date: "Mar 2026",
+                    text: "Released CyCLeGen, a unified model for layout prediction and image generation.",
+                    type: "New paper",
+                },
+                {date: "Sep 2025", text: "One paper got accepted to NeurIPS 2025 D&B Track! 🎉", type: "Publication"},
+                {date: "Jun 2025", text: "Started my internship as Applied Scientist at Amazon!", type: "Experience"},
+                {date: "May 2025", text: "One paper got accepted to ICCV 2025! 🎉", type: "Publication"},
+                {date: "Sep 2024", text: "One paper got accepted to NeurIPS 2024! 🎉", type: "Publication"},
                 {
                     date: "Jun 2024",
-                    text: "Graduated from ShanghaiTech University, recognized as a Shanghai Outstanding Graduate."
+                    text: "Graduated from ShanghaiTech University as a Shanghai Outstanding Graduate.",
+                    type: "Milestone",
                 },
-                {date: "Nov 2023", text: "One paper got accepted to ML4H 2023!🎉"},
+                {date: "Nov 2023", text: "One paper got accepted to ML4H 2023! 🎉", type: "Publication"},
             ],
             research: [
+                {
+                    lab: "Qwen Application",
+                    role: "Research Intern",
+                    location: "Shanghai, China",
+                    date: "Summer 2026",
+                    mentors: [{label: "Jiaming Liu", href: "https://jiamingliu.xyz"}],
+                },
                 {
                     lab: "Amazon AWS AI Labs",
                     role: "Applied Scientist Intern",
@@ -114,45 +132,86 @@ export default function PersonalSite() {
                         {label: "Yantao Shen", href: "https://yantaoshen.github.io"},
                         {label: "Zhaoyang Zhang", href: "https://zzyfd.github.io/#/"},
                     ],
-                    bullets: [],
                 },
                 {
                     lab: "UCSD MLPC Lab",
                     role: "Research Intern",
                     date: "2024 — Present",
-                    mentors: [
-                        {label: "Prof. Zhuowen Tu", href: "https://pages.ucsd.edu/~ztu/"},
-                    ],
+                    mentors: [{label: "Prof. Zhuowen Tu", href: "https://pages.ucsd.edu/~ztu/"}],
                 },
                 {
                     lab: "ShanghaiTech University PLUS Lab",
                     role: "Research Intern",
                     date: "2022 — 2024",
-                    mentors: [
-                        {label: "Prof. Xuming He", href: "https://xmhe.bitbucket.io"},
-                    ],
+                    mentors: [{label: "Prof. Xuming He", href: "https://xmhe.bitbucket.io"}],
                 },
             ],
             papers: [
                 {
-                    title:
-                        "OverLayBench: A Benchmark for Layout-to-Image Generation with Dense Overlaps",
+                    title: "Rethinking Classifier-Free Guidance in On-Policy Diffusion Distillation",
+                    authors: [
+                        {label: "Bingnan Li"},
+                        {label: "Haozhe Wang"},
+                        {label: "Haozhong Xiong"},
+                        {label: "Fangtai Wu"},
+                        {label: "Jinpeng Yu"},
+                        {label: "Yang Shi"},
+                        {label: "Jiaming Liu", href: "https://jiamingliu.xyz"},
+                        {label: "Ruihua Huang"},
+                    ],
+                    venue: "arXiv 2026",
+                    year: "2026",
+                    links: [
+                        {label: "Paper", href: "https://arxiv.org/abs/2607.24731"},
+                        {label: "Website", href: "https://rethinking-cfg-opd.github.io"},
+                    ],
+                    tags: ["On-Policy Distillation", "Classifier-Free Guidance", "Video Generation"],
+                },
+                {
+                    title: "CyCLeGen: Cycle-Consistent Layout Prediction and Image Generation in Vision Foundation Models",
+                    authors: [
+                        {label: "Xiaojun Shan", href: "https://shanxiaojun.github.io"},
+                        {label: "Haoyu Shen"},
+                        {label: "Yucheng Mao"},
+                        {label: "Xiang Zhang", href: "https://xzhang.dev"},
+                        {label: "Abhay Anand"},
+                        {label: "Bingnan Li"},
+                        {
+                            label: "Haiyang Xu",
+                            href: "https://scholar.google.com/citations?user=ds8ZvyMAAAAJ&hl=en",
+                        },
+                        {label: "Zhuowen Tu", href: "https://pages.ucsd.edu/~ztu/"},
+                    ],
+                    venue: "arXiv 2026",
+                    year: "2026",
+                    links: [{label: "Paper", href: "https://arxiv.org/abs/2603.14957"}],
+                    tags: ["Vision-Language Model", "Image Generation", "Layout Prediction"],
+                },
+                {
+                    title: "OverLayBench: A Benchmark for Layout-to-Image Generation with Dense Overlaps",
                     authors: [
                         {label: "Bingnan Li*"},
                         {label: "Chen-Yu Wang*", href: "https://www.linkedin.com/in/chenyu-wang-profile/"},
-                        {label: "Haiyang Xu*", href: "https://scholar.google.com/citations?user=ds8ZvyMAAAAJ&hl=en"}, // no link needed
+                        {
+                            label: "Haiyang Xu*",
+                            href: "https://scholar.google.com/citations?user=ds8ZvyMAAAAJ&hl=en",
+                        },
                         {label: "Xiang Zhang", href: "https://xzhang.dev"},
-                        {label: "Ethan Armand", href: "https://scholar.google.com/citations?user=LE6bioEAAAAJ&hl=en"},
+                        {
+                            label: "Ethan Armand",
+                            href: "https://scholar.google.com/citations?user=LE6bioEAAAAJ&hl=en",
+                        },
                         {
                             label: "Divyansh Srivastava",
-                            href: "https://scholar.google.com/citations?user=kw6DWjsAAAAJ&hl=en"
+                            href: "https://scholar.google.com/citations?user=kw6DWjsAAAAJ&hl=en",
                         },
                         {label: "Xiaojun Shan", href: "https://shanxiaojun.github.io"},
                         {label: "Zeyuan Chen", href: "https://zeyuan-chen.com"},
                         {label: "Jianwen Xie", href: "http://www.stat.ucla.edu/~jxie/"},
                         {label: "Zhuowen Tu", href: "https://pages.ucsd.edu/~ztu/"},
                     ],
-                    venue: "NeurIPS 2025 D&B Track",
+                    venue: "NeurIPS 2025 · D&B Track",
+                    year: "2025",
                     links: [
                         {label: "Paper", href: "https://arxiv.org/abs/2509.19282"},
                         {label: "Code", href: "https://github.com/mlpc-ucsd/OverLayBench"},
@@ -161,53 +220,52 @@ export default function PersonalSite() {
                     tags: ["Layout-to-Image", "Evaluation"],
                 },
                 {
-                    title:
-                        "YOLO-Count: Differentiable Object Counting for Text-to-Image Generation",
+                    title: "YOLO-Count: Differentiable Object Counting for Text-to-Image Generation",
                     authors: [
                         {label: "Guanning Zeng"},
                         {label: "Xiang Zhang", href: "https://xzhang.dev"},
-                        {label: "Zirui Wang", href: "https://zwcolin.github.io"}, // no link needed
+                        {label: "Zirui Wang", href: "https://zwcolin.github.io"},
                         {label: "Haiyang Xu"},
                         {label: "Zeyuan Chen", href: "https://zeyuan-chen.com"},
                         {label: "Bingnan Li"},
                         {label: "Zhuowen Tu", href: "https://pages.ucsd.edu/~ztu/"},
                     ],
                     venue: "ICCV 2025",
+                    year: "2025",
                     links: [
                         {label: "Paper", href: "https://arxiv.org/html/2508.00728v1/"},
                         {label: "Code", href: "https://github.com/mlpc-ucsd/YOLO-Count"},
-                        // {label: "Project", href: "#"},
                     ],
                     tags: ["Object Detection", "Classifier Guidance", "Text-to-Image"],
                 },
                 {
-                    title:
-                        "Generalize or Detect? Towards Robust Semantic Segmentation Under Multiple Distribution Shifts",
+                    title: "Generalize or Detect? Towards Robust Semantic Segmentation Under Multiple Distribution Shifts",
                     authors: [
                         {label: "Zhitong Gao", href: "https://gaozhitong.github.io"},
                         {label: "Bingnan Li"},
                         {label: "Mathieu Salzmann", href: "https://people.epfl.ch/mathieu.salzmann"},
-                        {label: "Xuming He", href: "https://xmhe.bitbucket.io"} // no link needed
+                        {label: "Xuming He", href: "https://xmhe.bitbucket.io"},
                     ],
                     venue: "NeurIPS 2024",
+                    year: "2024",
                     links: [
                         {
                             label: "Paper",
-                            href: "https://proceedings.neurips.cc/paper_files/paper/2024/file/5d3b57e06e3fc45f077eb5c9f28156d4-Paper-Conference.pdf"
+                            href: "https://proceedings.neurips.cc/paper_files/paper/2024/file/5d3b57e06e3fc45f077eb5c9f28156d4-Paper-Conference.pdf",
                         },
                         {label: "Code", href: "https://github.com/gaozhitong/MultiShiftSeg"},
                     ],
-                    tags: ["OoD Detection", "Domain Generalization", "Text-to-Image"],
+                    tags: ["OoD Detection", "Domain Generalization", "Semantic Segmentation"],
                 },
                 {
-                    title:
-                        "Gradient-Map-Guided Adaptive Domain Generalization for Cross Modality MRI Segmentation",
+                    title: "Gradient-Map-Guided Adaptive Domain Generalization for Cross Modality MRI Segmentation",
                     authors: [
                         {label: "Bingnan Li"},
                         {label: "Zhitong Gao", href: "https://gaozhitong.github.io"},
-                        {label: "Xuming He", href: "https://xmhe.bitbucket.io"} // no link needed
+                        {label: "Xuming He", href: "https://xmhe.bitbucket.io"},
                     ],
                     venue: "ML4H 2023",
+                    year: "2023",
                     links: [
                         {label: "Paper", href: "https://arxiv.org/pdf/2311.09737"},
                         {label: "Code", href: "https://github.com/cuttle-fish-my/GM-Guided-DG"},
@@ -215,306 +273,373 @@ export default function PersonalSite() {
                     tags: ["Domain Generalization", "Test Time Adaptation", "MRI Segmentation"],
                 },
             ],
-
         }),
-        []
+        [],
     );
 
     return (
-        <main
-            className="min-h-screen bg-gradient-to-b from-zinc-50 to-white text-zinc-900 dark:from-zinc-950 dark:to-black dark:text-zinc-100">
+        <main className="site-shell">
+            <AmbientBackground/>
             <Nav name={data.name} cvUrl={data.cvUrl}/>
             <Hero data={data}/>
-            <Section id="news" title="News" icon={<Newspaper className="h-5 w-5"/>}>
+
+            <Section
+                id="news"
+                eyebrow="Now & next"
+                title="Latest signals"
+                description="A running log of papers, places, and moments along the way."
+                icon={<Newspaper className="h-5 w-5"/>}
+            >
                 <News items={data.news}/>
             </Section>
 
-            <Section id="research" title="Research Experiences" icon={<School className="h-5 w-5"/>}>
+            <Section
+                id="research"
+                eyebrow="Where ideas happened"
+                title="Research journey"
+                description="Learning from outstanding teams across academia and industry."
+                icon={<School className="h-5 w-5"/>}
+            >
                 <Research items={data.research}/>
             </Section>
 
-            <Section id="papers" title="Publications" icon={<FileText className="h-5 w-5"/>}>
+            <Section
+                id="papers"
+                eyebrow={`${data.papers.length} selected works`}
+                title="Publications"
+                description="Generative models, controllability, and robust visual intelligence."
+                icon={<FileText className="h-5 w-5"/>}
+            >
                 <Papers items={data.papers}/>
             </Section>
 
-            <Footer name={data.name}/>
-
+            <Footer data={data}/>
             <BackToTop/>
         </main>
     );
 }
 
+function AmbientBackground() {
+    return (
+        <div className="ambient-background" aria-hidden="true">
+            <div className="aurora aurora-one"/>
+            <div className="aurora aurora-two"/>
+            <div className="aurora aurora-three"/>
+            <div className="noise-layer"/>
+            <div className="grid-layer"/>
+        </div>
+    );
+}
+
 function Nav({name, cvUrl}) {
     return (
-        // <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:supports-[backdrop-filter]:bg-black/30 border-b border-zinc-200/60 dark:border-zinc-800/60">
-        //     <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between gap-3">
-        //         <a href="#home" className="font-semibold tracking-tight text-lg">
-        //             {name}
-        //         </a>
-        //
-        //         {/* Primary links: hide on small, show from md up */}
-        //         <nav className="hidden md:flex items-center gap-4 text-sm">
-        //             <a href="#news" className="hover:opacity-80">News</a>
-        //             <a href="#research" className="hover:opacity-80">Research</a>
-        //             <a href="#papers" className="hover:opacity-80">Papers</a>
-        //         </nav>
-        //
-        //         {/* Actions: always visible, even on mobile */}
-        //         <div className="flex items-center gap-2 shrink-0">
-        //             {cvUrl && (
-        //                 <a
-        //                     href={cvUrl}
-        //                     target="_blank"
-        //                     rel="noreferrer"
-        //                     className="px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-2xl bg-zinc-100 dark:bg-zinc-800
-        //              text-xs md:text-sm whitespace-nowrap
-        //              text-zinc-900 dark:text-zinc-100
-        //              hover:bg-zinc-200 dark:hover:bg-zinc-700"
-        //                 >
-        //                     CV
-        //                 </a>
-        //             )}
-        //             <ThemeToggle />
-        //         </div>
-        //     </div>
-        // </header>
-        <header
-            className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:supports-[backdrop-filter]:bg-black/30 border-b border-zinc-200/60 dark:border-zinc-800/60">
-            <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between">
-                <a href="#home" className="font-semibold tracking-tight text-lg">
-                    {name}
+        <header className="site-nav-wrap">
+            <nav className="site-nav" aria-label="Primary navigation">
+                <a href="#home" className="brand-mark" aria-label={`${name}, back to home`}>
+                    <span>BL</span>
+                    <span className="brand-name">{name}</span>
                 </a>
-                <nav className="flex items-center gap-2 shrink-0">
-                    <div className="hidden md:flex items-center gap-4 text-sm">
-                        <a href="#news" className="hover:opacity-80">News</a>
-                        <a href="#research" className="hover:opacity-80">Research</a>
-                        <a href="#papers" className="hover:opacity-80">Papers</a>
-                    </div>
+
+                <div className="nav-links">
+                    <a href="#news">News</a>
+                    <a href="#research">Journey</a>
+                    <a href="#papers">Work</a>
+                </div>
+
+                <div className="nav-actions">
                     {cvUrl && (
-                        <a
-                            href={cvUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="px-3 py-1.5 rounded-2xl bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-                        >
-                            CV
+                        <a className="cv-link" href={cvUrl} target="_blank" rel="noreferrer">
+                            <Download className="h-3.5 w-3.5"/>
+                            <span>CV</span>
                         </a>
                     )}
                     <ThemeToggle/>
-                </nav>
-            </div>
+                </div>
+            </nav>
         </header>
     );
 }
 
 function Hero({data}) {
     return (
-        <section id="home" className="mx-auto max-w-5xl px-4 pt-10 md:pt-16 pb-8">
-            <div className="grid md:grid-cols-[1.2fr_.8fr] gap-6 md:gap-10 items-center">
-                <motion.div initial={{opacity: 0, y: 10}} animate={{opacity: 1, y: 0}} transition={{duration: 0.4}}>
-                    <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">{data.name}</h1>
-                    <p className="mt-2 text-zinc-600 dark:text-zinc-400">{data.title}</p>
-                    <p className="mt-6 leading-7 text-zinc-700 dark:text-zinc-300">{data.intro}</p>
-
-                    <div className="mt-6 flex flex-wrap gap-2">
-                        {data.highlights.map((h, i) => (
-                            <Badge key={i} variant="secondary" className="rounded-2xl">
-                                {h}
-                            </Badge>
-                        ))}
-                    </div>
-
-                    <div className="mt-7 flex flex-wrap items-center gap-3">
-                        {data.links.map((l, i) => (
-                            <Button
-                                key={i}
-                                asChild
-                                variant="outline"
-                                size="sm"
-                                className="rounded-2xl text-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                            >
-                                <a href={l.href} target="_blank" rel="noreferrer" className="inline-flex items-center">
-                                    <l.icon className="mr-2 h-4 w-4"/>
-                                    {l.label}
-                                </a>
-                            </Button>
-                        ))}
-                    </div>
-                </motion.div>
-
-                <motion.div
-                    initial={{opacity: 0, scale: 0.98}}
-                    animate={{opacity: 1, scale: 1}}
-                    transition={{duration: 0.4}}
-                    className="justify-self-center md:justify-self-end"
+        <section id="home" className="hero-section">
+            <div className="hero-copy">
+                <Motion.div
+                    initial={{opacity: 0, y: 14}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{duration: 0.45}}
+                    className="availability-pill"
                 >
-                    <div
-                        className="relative w-40 h-40 md:w-48 md:h-48 rounded-3xl overflow-hidden shadow-lg ring-1 ring-zinc-200/70 dark:ring-zinc-800/70">
-                        {/* Put /public/portrait.jpg */}
-                        <img src={data.avatar} alt="Portrait" className="w-full h-full object-cover"/>
+                    PhD · UC San Diego
+                </Motion.div>
+
+                <Motion.h1
+                    initial={{opacity: 0, y: 22}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1]}}
+                    className="hero-name"
+                >
+                    Bingnan <span>Li.</span>
+                </Motion.h1>
+
+                <Motion.div
+                    initial={{opacity: 0, y: 18}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{duration: 0.55, delay: 0.16}}
+                    className="hero-title"
+                >
+                    <div>
+                        <p>{data.affiliation}</p>
+                        <h2>{data.title}</h2>
                     </div>
-                </motion.div>
+                </Motion.div>
+
+                <Motion.p
+                    initial={{opacity: 0, y: 18}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{duration: 0.55, delay: 0.24}}
+                    className="hero-intro"
+                >
+                    {data.intro}
+                </Motion.p>
+
+                <Motion.div
+                    initial={{opacity: 0, y: 18}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{duration: 0.55, delay: 0.32}}
+                    className="hero-actions"
+                >
+                    {data.links.map((link) => (
+                        <a
+                            key={link.label}
+                            href={link.href}
+                            target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                            rel={link.href.startsWith("mailto:") ? undefined : "noreferrer"}
+                            className="social-link"
+                        >
+                            <link.icon className="h-4 w-4"/>
+                            <span>{link.label}</span>
+                            <ArrowUpRight className="social-arrow"/>
+                        </a>
+                    ))}
+                </Motion.div>
+
+                <Motion.div
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                    transition={{duration: 0.8, delay: 0.45}}
+                    className="hero-meta"
+                >
+                    <span><MapPin className="h-3.5 w-3.5"/>{data.location}</span>
+                </Motion.div>
             </div>
+
+            <Motion.div
+                initial={{opacity: 0, y: 14}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 0.55, delay: 0.18, ease: [0.22, 1, 0.36, 1]}}
+                className="portrait-stage"
+            >
+                <div className="portrait-orbit" aria-hidden="true">
+                    <span className="orbit-dot orbit-dot-one"/>
+                    <span className="orbit-dot orbit-dot-two"/>
+                </div>
+                <div className="portrait-frame">
+                    <img src={data.avatar} alt="Bingnan Li" className="portrait-image"/>
+                    <div className="portrait-shine"/>
+                </div>
+            </Motion.div>
         </section>
     );
 }
 
-function Section({id, title, icon, children}) {
+function Section({id, eyebrow, title, description, icon, children}) {
     return (
-        <section id={id} className="mx-auto max-w-5xl px-4 py-8 md:py-12">
-            <div className="flex items-center gap-2 mb-5">
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-900">
-          {icon}
-        </span>
-                <h2 className="text-xl md:text-2xl font-semibold tracking-tight">{title}</h2>
-            </div>
+        <section id={id} className="content-section">
+            <Motion.div {...reveal} className="section-heading">
+                <div className="section-icon">{icon}</div>
+                <div>
+                    <p className="section-eyebrow">{eyebrow}</p>
+                    <h2>{title}</h2>
+                    <p className="section-description">{description}</p>
+                </div>
+            </Motion.div>
             {children}
         </section>
     );
 }
 
-function Papers({items}) {
-    return (
-        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-            {items.map((p, i) => (
-                <Card key={i} className="rounded-2xl flex flex-col">
-                    <CardHeader>
-                        <CardTitle className="text-base md:text-lg font-semibold">
-                            {p.title}
-                        </CardTitle>
-                        {/* Authors */}
-                        <div className="text-sm text-zinc-600 dark:text-zinc-400 flex flex-wrap gap-1">
-                            {p.authors.map((a, idx) => (
-                                <a
-                                    key={idx}
-                                    href={a.href}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className={`hover:underline ${a.label.includes("Bingnan Li") ? "font-bold" : ""}`}
-                                >
-                                    {a.label}
-                                    {idx < p.authors.length - 1 && ','}
-                                </a>
-                            ))}
-                        </div>
-                        <div className="text-sm text-zinc-600 dark:text-zinc-400">{p.venue}</div>
-                    </CardHeader>
+function News({items}) {
+    const [latest, ...rest] = items;
 
-                    {/* CardContent now fills remaining space */}
-                    <CardContent className="flex flex-col flex-1 pt-0">
-                        {/* Empty spacer to push footer to bottom */}
-                        <div className="mt-auto">
-                            <div className="flex flex-wrap gap-2">
-                                {p.tags.map((t, j) => (
-                                    <Badge key={j} variant="secondary" className="rounded-2xl">
-                                        {t}
-                                    </Badge>
-                                ))}
-                            </div>
-                            <div className="mt-3 flex flex-wrap gap-3">
-                                {p.links.map((l, k) => (
-                                    <Button key={k} asChild variant="ghost" size="sm" className="px-2 h-8">
-                                        <a href={l.href} target="_blank" rel="noreferrer"
-                                           className="inline-flex items-center">
-                                            <ArrowUpRight className="mr-1.5 h-4 w-4"/> {l.label}
-                                        </a>
-                                    </Button>
-                                ))}
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-            ))}
-        </div>
+    return (
+        <Motion.div {...reveal} className="news-layout">
+            <article className="news-feature">
+                <div className="news-feature-top">
+                    <span className="news-live"><span/>Latest</span>
+                    <time>{latest.date}</time>
+                </div>
+                <div className="news-feature-icon">
+                    <BookOpen className="h-6 w-6"/>
+                </div>
+                <p>{latest.text}</p>
+                <span className="news-type">{latest.type}</span>
+            </article>
+
+            <div className="news-list">
+                {rest.map((item, index) => (
+                    <article className="news-row" key={`${item.date}-${item.text}`}>
+                        <div className="news-index">{String(index + 2).padStart(2, "0")}</div>
+                        <time>{item.date}</time>
+                        <p>{item.text}</p>
+                        <span className="news-row-type">{item.type}</span>
+                    </article>
+                ))}
+            </div>
+        </Motion.div>
     );
 }
 
 function Research({items}) {
-    if (!items || items.length === 0) {
-        return <p className="text-sm text-zinc-600 dark:text-zinc-400">Add your research entries to the data object to
-            show them here.</p>;
-    }
     return (
-        <div className="space-y-4 md:space-y-6">
-            {items.map((r, i) => (
-                <Card key={i} className="rounded-2xl">
-                    <CardHeader>
-                        <div className="flex items-center justify-between">
-                            <CardTitle className="text-base md:text-lg font-semibold">
-                                {r.role} · {r.lab}
-                            </CardTitle>
-                            <span className="text-xs md:text-sm text-zinc-500 dark:text-zinc-400">
-                                <CalendarFold className="inline-block mr-1 h-4 w-4"/> {r.date}
-                            </span>
-                        </div>
-                        {r.mentors && r.mentors.length > 0 && (
-                            <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                                <span className="font-medium">Mentors:</span>{" "}
-                                {r.mentors.map((m, idx) => (
-                                    <span key={idx}>
-                                          {m.href ? (
-                                              <a
-                                                  href={m.href}
-                                                  target="_blank"
-                                                  rel="noreferrer"
-                                                  className="underline hover:opacity-80"
-                                              >
-                                                  {m.label}
-                                              </a>
-                                          ) : (
-                                              m.label
-                                          )}
-                                        {idx < r.mentors?.length - 1 ? ", " : ""}
-                                        </span>
-                                ))}
-                            </div>
-                        )}
-                    </CardHeader>
-                    {/*<CardContent className="pt-0">*/}
-                    {/*    <ul className="list-disc list-inside space-y-1.5 text-sm text-zinc-700 dark:text-zinc-300">*/}
-                    {/*        {r.bullets.map((b, j) => (*/}
-                    {/*            <li key={j}>{b}</li>*/}
-                    {/*        ))}*/}
-                    {/*    </ul>*/}
-                    {/*</CardContent>*/}
-                </Card>
-            ))}
-        </div>
-    );
-}
-
-function News({items}) {
-    if (!items || items.length === 0) {
-        return <p className="text-sm text-zinc-600 dark:text-zinc-400">Add your news items to the data object to show
-            them here.</p>;
-    }
-    return (
-        <div className="space-y-3">
-            {items.map((n, i) => (
-                <div key={i} className="flex items-start gap-3">
-          <span className="text-xs md:text-sm text-zinc-500 dark:text-zinc-400 min-w-[84px] mt-0.5">
-            <GraduationCap className="inline mr-1 h-4 w-4"/>
-              {n.date}
-          </span>
-                    <p className="text-sm md:text-base text-zinc-800 dark:text-zinc-200">{n.text}</p>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-function Footer({name}) {
-    return (
-        <footer className="px-4 py-10 border-t border-zinc-200/60 dark:border-zinc-800/60">
-            <div className="mx-auto max-w-5xl text-sm text-zinc-500 dark:text-zinc-400">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-                    <div>© {new Date().getFullYear()} {name}. Built with React, Tailwind, and shadcn/ui.</div>
-                    <div className="flex items-center gap-4">
-                        <a href="#home" className="hover:opacity-80 inline-flex items-center">
-                            <LinkIcon className="mr-1 h-4 w-4"/> Top
-                        </a>
+        <div className="timeline">
+            {items.map((item, index) => (
+                <Motion.article
+                    {...reveal}
+                    transition={{...reveal.transition, delay: index * 0.06}}
+                    className="timeline-item"
+                    key={`${item.lab}-${item.date}`}
+                >
+                    <div className="timeline-rail">
+                        <span className="timeline-node">{String(index + 1).padStart(2, "0")}</span>
                     </div>
+                    <div className="experience-card">
+                        <div className="experience-main">
+                            <p className="experience-role">
+                                <BriefcaseBusiness className="h-4 w-4"/>
+                                {item.role}
+                            </p>
+                            <h3>{item.lab}</h3>
+                            {item.location && (
+                                <p className="experience-location">
+                                    <MapPin className="h-3.5 w-3.5"/>
+                                    {item.location}
+                                </p>
+                            )}
+                            {item.mentors?.length > 0 && (
+                                <div className="mentor-list">
+                                    <span>Mentored by</span>
+                                    {item.mentors.map((mentor, mentorIndex) => (
+                                        <span key={mentor.label}>
+                                            <a href={mentor.href} target="_blank" rel="noreferrer">
+                                                {mentor.label}
+                                            </a>
+                                            {mentorIndex < item.mentors.length - 1 && <span>, </span>}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        <div className="experience-date">
+                            <CalendarFold className="h-4 w-4"/>
+                            {item.date}
+                        </div>
+                    </div>
+                </Motion.article>
+            ))}
+        </div>
+    );
+}
+
+function Author({author, isLast}) {
+    const className = author.label.includes("Bingnan Li") ? "author author-self" : "author";
+    const content = (
+        <>
+            {author.label}
+            {!isLast && ","}
+        </>
+    );
+
+    return author.href ? (
+        <a className={className} href={author.href} target="_blank" rel="noreferrer">
+            {content}
+        </a>
+    ) : (
+        <span className={className}>{content}</span>
+    );
+}
+
+function Papers({items}) {
+    return (
+        <div className="papers-grid">
+            {items.map((paper, index) => (
+                <Motion.article
+                    {...reveal}
+                    transition={{...reveal.transition, delay: (index % 2) * 0.06}}
+                    className={`paper-card ${index === 0 ? "paper-card-featured" : ""}`}
+                    key={paper.title}
+                >
+                    <div className="paper-card-glow"/>
+                    <div className="paper-topline">
+                        <span className="paper-index">{String(index + 1).padStart(2, "0")}</span>
+                        <span className="paper-venue">{paper.venue}</span>
+                    </div>
+
+                    <h3>{paper.title}</h3>
+
+                    <div className="paper-authors">
+                        {paper.authors.map((author, authorIndex) => (
+                            <Author
+                                key={`${author.label}-${authorIndex}`}
+                                author={author}
+                                isLast={authorIndex === paper.authors.length - 1}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="paper-footer">
+                        <div className="paper-tags">
+                            {paper.tags.map((tag) => (
+                                <Badge key={tag} variant="secondary" className="paper-tag">
+                                    {tag}
+                                </Badge>
+                            ))}
+                        </div>
+                        <div className="paper-links">
+                            {paper.links.map((link) => (
+                                <Button key={link.label} asChild variant="ghost" size="sm" className="paper-link">
+                                    <a href={link.href} target="_blank" rel="noreferrer">
+                                        {link.label}
+                                        <ArrowUpRight className="h-3.5 w-3.5"/>
+                                    </a>
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
+                </Motion.article>
+            ))}
+        </div>
+    );
+}
+
+function Footer({data}) {
+    return (
+        <footer className="site-footer">
+            <div className="footer-bottom">
+                <p>© {new Date().getFullYear()} {data.name}</p>
+                <div className="footer-links">
+                    {data.links.slice(0, 3).map((link) => (
+                        <a
+                            key={link.label}
+                            href={link.href}
+                            target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                            rel={link.href.startsWith("mailto:") ? undefined : "noreferrer"}
+                        >
+                            {link.label}
+                        </a>
+                    ))}
                 </div>
+                <p>{data.location}</p>
             </div>
         </footer>
     );
@@ -522,12 +647,8 @@ function Footer({name}) {
 
 function BackToTop() {
     return (
-        <a
-            href="#home"
-            className="fixed bottom-6 right-6 md:bottom-8 md:right-8 inline-flex items-center justify-center h-10 w-10 rounded-2xl shadow-lg ring-1 ring-zinc-200/70 dark:ring-zinc-800/70 bg-white/80 dark:bg-zinc-900/80 backdrop-blur hover:scale-[1.03] transition"
-            aria-label="Back to top"
-        >
-            <ArrowUpRight className="h-5 w-5"/>
+        <a href="#home" className="back-to-top" aria-label="Back to top">
+            <ArrowUp className="h-4 w-4"/>
         </a>
     );
 }
