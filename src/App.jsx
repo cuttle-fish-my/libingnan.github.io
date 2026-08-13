@@ -96,6 +96,16 @@ export default function PersonalSite() {
             ],
             news: [
                 {
+                    date: "Aug 2026",
+                    text: "Released AVA-Encoder, a framework for agent-native video representation learning.",
+                    type: "New paper",
+                },
+                {
+                    date: "Aug 2026",
+                    text: "Released a new paper on visually aligned follow-up suggestions for conversational image editing.",
+                    type: "New paper",
+                },
+                {
                     date: "Jul 2026",
                     text: "Released a new paper on classifier-free guidance in on-policy diffusion distillation!",
                     type: "New paper",
@@ -148,7 +158,49 @@ export default function PersonalSite() {
             ],
             papers: [
                 {
+                    title: "AVA-Encoder: Towards Agent-Native Video Representation Learning",
+                    authors: [
+                        {label: "Chuyue Li"},
+                        {label: "Jinpeng Yu"},
+                        {label: "Haozhe Wang"},
+                        {label: "Tian Xueyun"},
+                        {label: "Zhijing Zhang"},
+                        {label: "Bingnan Li"},
+                        {label: "Shuqi Gu"},
+                        {label: "Kan Ren"},
+                        {label: "Jiaming Liu", href: "https://jiamingliu.xyz"},
+                        {label: "Ruihua Hua"},
+                    ],
+                    venue: "arXiv 2026",
+                    year: "2026",
+                    links: [
+                        {label: "Paper", href: "https://arxiv.org/abs/2608.12313"},
+                    ],
+                    tags: ["Agentic Video", "Video Representation", "Knowledge Graph"],
+                },
+                {
+                    title: "What to Edit Next: Visually Aligned Image-Editing Follow-Up Suggestions in Conversational Systems",
+                    authors: [
+                        {label: "Zhijing Zhang"},
+                        {label: "Jinpeng Yu"},
+                        {label: "Xin Song"},
+                        {label: "Bingnan Li"},
+                        {label: "Chuyue Li"},
+                        {label: "Changhui Du"},
+                        {label: "Xiaolin Fang"},
+                        {label: "Jiaming Liu", href: "https://jiamingliu.xyz"},
+                        {label: "Ruihua Huang"},
+                    ],
+                    venue: "arXiv 2026",
+                    year: "2026",
+                    links: [
+                        {label: "Paper", href: "https://arxiv.org/abs/2608.07565"},
+                    ],
+                    tags: ["Image Editing", "Multimodal Recommendation", "Reinforcement Learning"],
+                },
+                {
                     title: "Rethinking Classifier-Free Guidance in On-Policy Diffusion Distillation",
+                    featured: true,
                     authors: [
                         {label: "Bingnan Li"},
                         {label: "Haozhe Wang"},
@@ -576,7 +628,7 @@ function Papers({items}) {
                 <Motion.article
                     {...reveal}
                     transition={{...reveal.transition, delay: (index % 2) * 0.06}}
-                    className={`paper-card ${index === 0 ? "paper-card-featured" : ""}`}
+                    className={`paper-card ${paper.featured ? "paper-card-featured" : ""}`}
                     key={paper.title}
                 >
                     <div className="paper-card-glow"/>
