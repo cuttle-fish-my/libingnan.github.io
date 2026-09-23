@@ -3,23 +3,43 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Bingnan Li — researcher in generative models, controllable image and video generation, and visual intelligence."/>
-    <meta name="theme-color" content="#6657e8"/>
+    <title>Bingnan Li — Generative Models & Controllable Generation</title>
+    <meta name="description" content="Bingnan Li — PhD student at UC San Diego working on generative models and controllable image and video generation."/>
+    <meta name="theme-color" content="#f4f2ee"/>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://www.bingnanli.com/"/>
     <meta property="og:title" content="Bingnan Li — Generative Models & Controllable Generation"/>
-    <meta property="og:description" content="Research in generative models, controllable image and video generation, and visual intelligence."/>
+    <meta property="og:description" content="PhD student at UC San Diego working on generative models and controllable image and video generation."/>
     <meta property="og:image" content="https://www.bingnanli.com/og.png"/>
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="Bingnan Li — Generative Models & Controllable Generation"/>
-    <meta name="twitter:description" content="Research in generative models, controllable image and video generation, and visual intelligence."/>
+    <meta name="twitter:description" content="PhD student at UC San Diego working on generative models and controllable image and video generation."/>
     <meta name="twitter:image" content="https://www.bingnanli.com/og.png"/>
-    <title>Bingnan Li — Generative Models & Controllable Generation</title>
-  <script type="module" crossorigin src="/assets/index-Bj5ICAUz.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BsFnsIfl.css">
+    <script>
+        // Pick the theme before first paint: saved choice, else the OS setting.
+        (function () {
+            var theme = "light";
+            try {
+                var saved = localStorage.getItem("theme");
+                theme = saved === "dark" || saved === "light" ? saved
+                    : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            } catch (e) {}
+            document.documentElement.dataset.theme = theme;
+            if (theme === "dark") document.querySelector('meta[name="theme-color"]').setAttribute("content", "#131210");
+        })();
+    </script>
+  <script type="module" crossorigin src="/assets/index-aHNONurx.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-HGP0C4Wi.css">
 </head>
 <body>
-<div id="root">
-</div>
+<div id="root"></div>
+<noscript>
+    <p style="font-family: Georgia, serif; max-width: 36rem; margin: 4rem auto; padding: 0 1.5rem; line-height: 1.6">
+        Bingnan Li — PhD student at UC San Diego. This page needs JavaScript for its interactive figures.
+        Email: libn.152b4a [at] gmail [dot] com
+    </p>
+</noscript>
 </body>
 </html>
